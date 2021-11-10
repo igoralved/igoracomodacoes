@@ -2,24 +2,24 @@ package com.example.igorjuliana;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AcomodacaoDTO {
 
 	
 	private Long id;
-	
-	private TipoAcomodacao tipo;
-	private int capacidade;
-	private List<String> avaliacoesdeoutroshospedes;
-	private String localizacao;
-	private boolean permiteAnimais;
-	private boolean temEstacionamento;
+		private TipoAcomodacao tipo;
+		private int capacidade;
+		private List<ComentarioDTO> avaliacoes = new ArrayList<>();
+		private String localizacao;
+		private boolean permiteAnimais;
+		private boolean temEstacionamento;
 	
 	public AcomodacaoDTO(Acomodacao a) {
 		this.id = a.getId();
 		this.tipo = a.getTipo();
 		this.capacidade = a.getCapacidade();
-		this.avaliacoesdeoutroshospedes = a.getAvaliacoes();
+		this.avaliacoes.addAll(a.getAvaliacoes().stream().map(ComentarioDTO::new).collect(Collectors.toList()));
 		this.localizacao = a.getLocalizacao();
 		this.permiteAnimais = a.getPermiteAnimais();
 		this.temEstacionamento = a.getTemEstacionamento();
@@ -37,8 +37,8 @@ public class AcomodacaoDTO {
 		return this.capacidade;
 	}
 	
-	public List<String> getAvaliacoes(){
-		return this.avaliacoesdeoutroshospedes;
+	public List<ComentarioDTO> getAvaliacoes(){
+		return this.avaliacoes;
 	}
 	
 	public String getLocalizacao() {

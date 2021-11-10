@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 enum TipoAcomodacao{
 	CASA,
@@ -13,14 +18,21 @@ enum TipoAcomodacao{
 }
 
 @Entity
+@Table(name = "Acomodacao")
 public class Acomodacao {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private TipoAcomodacao tipo;
 	private int capacidade;
-	private List<String> avaliacoesdeoutroshospedes;
+	
+	@OneToMany
+	@JoinColumn(name = "id_c")
+	private List<Comentario> avaliacoes;
+	
+	
 	private String localizacao;
 	private boolean permiteAnimais;
 	private boolean temEstacionamento;
@@ -36,7 +48,7 @@ public class Acomodacao {
 		this.localizacao = localizacao;
 		this.permiteAnimais = permitea;
 		this.temEstacionamento = teme;
-		this.avaliacoesdeoutroshospedes = new ArrayList<>();
+		this.avaliacoes = new ArrayList<Comentario>();
 	}
 	
 	public Long getId() {
@@ -59,12 +71,12 @@ public class Acomodacao {
 		this.capacidade = capacidade;
 	}
 	
-	public List<String> getAvaliacoes(){
-		return this.avaliacoesdeoutroshospedes;
+	public List<Comentario> getAvaliacoes(){
+		return this.avaliacoes;
 	}
 	
-	public void setAvaliacoes(List<String> nova) {
-		this.avaliacoesdeoutroshospedes = nova;
+	public void setAvaliacoes(List<Comentario> nova) {
+		this.avaliacoes = nova;
 	}
 	
 	public String getLocalizacao() {
@@ -93,6 +105,10 @@ public class Acomodacao {
 	
 	public void setTemEstacionamento(boolean permissao) {
 		this.temEstacionamento = permissao;
+	}
+	
+	public void addComment(Comentario comentario) {
+		this.avaliacoes.add(comentario);
 	}
 	
 }
